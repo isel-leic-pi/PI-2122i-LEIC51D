@@ -1,3 +1,3 @@
-# Repositório do código das aulas da turma LEIC31N de PI, 1º Semestre de 2021/2022
+# Code repository for LEIC51D class from Internet Programming course, 1st Semester of 2021/2022
 
-Para mais informações sobre esta turma consultar o [wiki](../../wiki) deste repositório.
+For more information about this class see this repository [wiki](../../wiki).
