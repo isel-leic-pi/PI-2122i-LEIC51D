@@ -13,12 +13,14 @@ const app = express()
 const PORT = 1904
 
 const jokesData = require('./jokes-data_mem')
+//const jokesData = require('./jokes-db')
 const jokesServices = require('./jokes-services')(jokesData)
 const jokesApi = require('./jokes-api')(jokesServices)
 const jokesSite = require('./jokes-web-site')(jokesServices)
 
 
 app.use(express.json())
+app.use(express.urlencoded())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

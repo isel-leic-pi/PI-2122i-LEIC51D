@@ -26,8 +26,8 @@ module.exports = function (jokesData) {
         return jokesData.getJoke(id)
     }
     
-    async function createJoke(text){
-        return jokesData.createJoke(text)
+    async function createJoke(userId, text){
+        return jokesData.createJoke(userId, text)
     }
     
     async function updateJoke(id, text){
