@@ -22,10 +22,11 @@ const jokesSite = require('./jokes-web-site')(jokesServices)
 app.use(express.json())
 app.use(express.urlencoded())
 
+app.use(generateCookie)        
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-
 
 app.use('/api-docs', swaggerUi.serve);
 app.get('/api-docs', swaggerUi.setup(swaggerDocument));
@@ -42,10 +43,12 @@ app.post('/api/jokes', jokesApi.createJoke)        // Delete a joke
 
 app.use('/', jokesSite)           
 
+
 app.listen(PORT, () => console.log(`Example app listening at http://localhost:${PORT}`))
 
-function dummy(req, rsp, next) {
-    console.log('Dummy called')
+function generateCookie(req, rsp, next) {
+    console.log('####')
+    rsp.cookie('jokes', 'slb')
     next()
 
 }
