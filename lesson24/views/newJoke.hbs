@@ -1,0 +1,17 @@
+
+<style>
+    #chuck { width: 30px;}
+</style>
+<h2> Create a new Joke </h2>
+
+<form action="/jokes" method="POST">
+    <p>Joke Title: <input type="text" name="title"></p>
+    <p>Joke Text: <input type="text" name="text"></p>
+    
+    
+    <input type="submit"  value="Create a new Joke">
+    <button name="submit">
+        <strong>Create a Chuck Norris</strong> like Joke
+        <img id="chuck" src="https://api.chucknorris.io/img/chucknorris_logo_coloured_small@2x.png">
+    </button>
+</form>
