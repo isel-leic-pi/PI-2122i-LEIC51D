@@ -2,7 +2,7 @@
 // Have the functions that handle HTTP requests and 
 // delegate all domain logic to jokes-services module
 
-const httpErrors = require('./http-errors')
+const httpErrors = require('../http-errors')
 
 module.exports = function(jokesServices) {
     if(!jokesServices) 

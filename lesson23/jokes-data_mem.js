@@ -1,7 +1,11 @@
 const crypto = require('crypto')
 const errors = require('./errors')
 
-const USERS = [{ userId: '0b115b6e-8fcd-4b66-ac26-33392dcb9340', userName: 'User1'}, {userId: '3dfd8596-cfd3-431d-8e36-f0fc4c64f364', userName: 'user2'}]
+const USERS = [
+    { userId: '0b115b6e-8fcd-4b66-ac26-33392dcb9340', userName: 'User1', password: 'slb'}, 
+    {userId: '3dfd8596-cfd3-431d-8e36-f0fc4c64f364', userName: 'User2', password: 'glorioso'}
+]
+
 
  const SIZE_JOKES = 5
 
@@ -16,7 +20,8 @@ module.exports = {
     getJoke : getJoke,
     updateJoke : updateJoke,
     createJoke : createJoke,
-    deleteJoke : deleteJoke
+    deleteJoke : deleteJoke,
+    getUserByUsername: getUserByUsername
 }
 
 function getJokes(searchText, skip = 0, limit = jokes.length){
@@ -47,5 +52,14 @@ function updateJoke(id, text){
 
 function deleteJoke(id){ 
     console.log("deleteJoke")
+}
+
+
+async function getUserByUsername(username) {
+    const user = USERS.find(user => user.userName == username)
+
+    if(user)
+        return user
+    throw errors.INVALID_USERNAME
 }
 

@@ -1,8 +1,8 @@
-// File rsponsibilities
+// File responsibilities
 // Have the functions that handle HTTP requests and 
 // delegate all domain logic to jokes-services module
 
-const httpErrors = require('./http-errors')
+const httpErrors = require('../http-errors')
 const express = require('express')
 
 module.exports = function(jokesServices) {
@@ -11,21 +11,13 @@ module.exports = function(jokesServices) {
 
     const router = express.Router()
 
-    // HAMMER TIME: Middleware to insert an hardcoded user
-    router.use(insertHammerUser) 
-
-
-    router.get('/jokes', getJokes)
-    router.get('/jokes/new', newJoke)
-    router.post('/jokes', createJoke)
-    router.get('/jokes/:id', getJoke)
+    router.get('/', getJokes)
+    router.get('/new', newJoke)
+    router.post('/', createJoke)
+    router.get('/:id', getJoke)
     
     return router
 
-    function insertHammerUser(req, rsp, next) {
-        req.user = '0b115b6e-8fcd-4b66-ac26-33392dcb9340'
-        next()
-    }
 
     async function getJokes(req, rsp){
         let userId = req.user

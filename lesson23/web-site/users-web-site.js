@@ -1,58 +1,56 @@
-// File rsponsibilities
-// Have the functions that handle HTTP requests and 
-// delegate all domain logic to jokes-services module
+// File responsibilities
+// Handle users management and logon sessions
 
-const httpErrors = require('./http-errors')
+const httpErrors = require('../http-errors')
 const express = require('express')
+const passport = require('passport') 
 
-module.exports = function(jokesServices) {
+module.exports = function(app, jokesServices) {
     if(!jokesServices) 
         throw "Invalid argument for jokesData"
 
     const router = express.Router()
 
-    // HAMMER TIME: Middleware to insert an hardcoded user
-    router.use(insertHammerUser) 
+    // Passport initialization
+    app.use(passport.initialize())
+    app.use(passport.session())
+    passport.serializeUser((user, done) => done(null, user))
+    passport.deserializeUser((user, done) => done(null, user))
 
-
-    router.get('/jokes', getJokes)
-    router.get('/jokes/new', newJoke)
-    router.post('/jokes', createJoke)
-    router.get('/jokes/:id', getJoke)
-    
+    router.get('/create', createUserForm) 
+    router.post('/', createUser) 
+    router.get('/login', loginForm) 
+    router.post('/login', login) 
+    router.post('/logout', logout)     
     return router
 
-    function insertHammerUser(req, rsp, next) {
-        req.user = '0b115b6e-8fcd-4b66-ac26-33392dcb9340'
-        next()
+    function createUserForm(req, rsp) {
+        rsp.end("createUserForm")
     }
 
-    async function getJokes(req, rsp){
-        let userId = req.user
-        let jokes = await jokesServices.getJokes(userId)
-        
-        rsp.render('jokes', { title: 'All jokes', jokes: jokes.map((j, idx) =>  { return{ joke: j, beginRow: idx%2 == 0, endRow: idx%2 == 1 || idx == jokes.length-1}} )} )
-    }
-    
-
-    async function newJoke(req, rsp){
-        rsp.render('newJoke')
+    function createUser(req, rsp) {
+        rsp.end("createUser")
     }
 
-    async function createJoke(req, res){
-        // jokesServices.createJoke(req.body.text)
-        //     .then( newJoke => res.render('joke', newJoke))
-        let newJoke = await jokesServices.createJoke(req.user, req.body.text) 
-        res.redirect(`/jokes/${newJoke.id}`)
+    function loginForm(req, rsp) {
+        rsp.render("login")
     }
 
-    async function getJoke(req, rsp){
-        const joke = await jokesServices.getJoke(req.params.id)
-        rsp.render('joke', joke)
+    async function login(req, rsp) {
+        let username = req.body.username
+        let pass = req.body.password
+
+        try {
+            let userId = await jokesServices.validateCredentials(username, pass)
+            req.login(userId)
+            rsp.redirect('/site/jokes')
+        } catch(err) {
+            rsp.status(401).render('login', { username: username, message: 'Invalid credentials'})
+        }
     }
 
-
-
+    function logout(req, rsp) {
+        rsp.end("logout")
+    }
 }
-
 
