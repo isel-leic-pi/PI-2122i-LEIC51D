@@ -13,9 +13,13 @@ const swaggerDocument = YAML.load(path.join(__dirname,'./docs/jokes-api.yaml'));
 const app = express()
 const PORT = process.env.PORT || 1904
 const HOST = process.env.HOST
+const ELASTIC_URL = process.env.BONSAI_URL || 'http://localhost:9200'
+
 
 app.use(expressSession({secret: "Benfica campeão 2021/2022 ?"}))
 
+
+//const jokesData = process.env.HEROKU ? require('./jokes-data_mem') : require('./jokes-db')(ELASTIC_URL)
 const jokesData = require('./jokes-data_mem')
 //const jokesData = require('./jokes-db')
 const jokesServices = require('./jokes-services')(jokesData)
@@ -44,8 +48,5 @@ app.use('/', jokesSite)
 app.use('/users', usersSite)           
 
 
-
-
-
 app.listen(PORT, () => console.log(`Jokes app listening at http://${HOST}:${PORT}`))
-
+console.log(process.env)

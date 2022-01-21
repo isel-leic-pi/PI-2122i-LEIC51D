@@ -30,15 +30,6 @@
         const jokesElem = document.querySelectorAll('div.joke')
         jokesElem.forEach(je => je.parentElement.removeChild(je))
         const jokesRows = document.querySelectorAll('div.joke-row')
-        const numJokes = jokesElem.length
-        jokesRows.forEach((jr, idx) => { 
-            if(idx*2 < numJokes) { 
-                jr.appendChild(jokesElem[idx*2])
-                if(idx*2+1 < numJokes)
-                    jr.appendChild(jokesElem[idx*2+1])
-            } else {
-                jr.parentElement.removeChild(jr)
-            }
-        })
+        jokesRows.forEach((jr, idx) => { jr.appendChild(jokesElem[idx*2]); jr.appendChild(jokesElem[idx*2+1]) })
     }
 }
