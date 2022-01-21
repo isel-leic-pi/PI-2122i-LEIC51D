@@ -11,7 +11,8 @@ const YAML = require('yamljs');
 const swaggerDocument = YAML.load(path.join(__dirname,'./docs/jokes-api.yaml'));
 
 const app = express()
-const PORT = 1904
+const PORT = process.env.PORT || 1904
+const HOST = process.env.HOST
 
 app.use(expressSession({secret: "Benfica campeão 2021/2022 ?"}))
 
@@ -46,5 +47,5 @@ app.use('/users', usersSite)
 
 
 
-app.listen(PORT, () => console.log(`Example app listening at http://localhost:${PORT}`))
+app.listen(PORT, () => console.log(`Jokes app listening at http://${HOST}:${PORT}`))
 
