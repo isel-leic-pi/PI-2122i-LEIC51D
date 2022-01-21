@@ -26,6 +26,7 @@ const authApi = require('./web-api/authorization')
 
 app.use(express.json())
 app.use(express.urlencoded())
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,9 +38,12 @@ app.use('/api-docs', swaggerUi.serve);
 app.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
 app.use('/api', authApi)
-app.use('/api', jokesApi)           
+app.use('/api/jokes', jokesApi)           
 app.use('/site/jokes', jokesSite)           
 app.use('/site/users', usersSite)           
+
+
+
 
 
 app.listen(PORT, () => console.log(`Example app listening at http://localhost:${PORT}`))

@@ -21,10 +21,12 @@ module.exports = function(jokesServices) {
 
     async function getJokes(req, rsp){
         try {
-            let userId = req.user.userId
+            let userId = req.user ? req.user.userId : undefined
+            let username = req.user ? req.user.username : "anonymous"
             let jokes = await jokesServices.getJokes(userId)
-            rsp.render('jokes', { username: req.user.username, title: 'All jokes', jokes: jokes.map((j, idx) =>  { return{ joke: j, beginRow: idx%2 == 0, endRow: idx%2 == 1 || idx == jokes.length-1}} )} )
+            rsp.render('jokes', { user: req.user, title: 'All jokes', jokes: jokes.map((j, idx) =>  { return{ joke: j, beginRow: idx%2 == 0, endRow: idx%2 == 1 || idx == jokes.length-1}} )} )
         } catch(err) {
+            console.log(err)
             rsp.redirect('/site/users/login')
         }
     }

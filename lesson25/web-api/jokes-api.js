@@ -11,11 +11,11 @@ module.exports = function(jokesServices) {
 
     const router = express.Router()
     
-    router.get('/jokes', getJokes)           // Get all jokes
-    router.get('/jokes/:id', getJoke)        // Get a joke details
-    router.delete('/jokes/:id', deleteJoke)  // Delete a joke
-    router.put('/jokes/:id', updateJoke)     // Update a joke
-    router.post('/jokes', createJoke)        // Delete a joke
+    router.get('/', getJokes)           // Get all jokes
+    router.get('/:id', getJoke)        // Get a joke details
+    router.delete('/:id', deleteJoke)  // Delete a joke
+    router.put('/:id', updateJoke)     // Update a joke
+    router.post('/', createJoke)        // Delete a joke
 
     return router
 
@@ -64,7 +64,11 @@ module.exports = function(jokesServices) {
     
     
     function deleteJoke(req, rsp){ 
-        rsp.json({message : "deleteJoke " })
+        const jokeId = req.params.id
+        jokesServices.deleteJoke(req.user.userId, jokeId)
+            .then((_)=>rsp.status(200).json({ status: `joke with id ${jokeId} deleted` } ))
+            // TODO: Handle erros properly
+            .catch((e)=>rsp.status(500).json({message : `Server Error: ${e}`}))
     }    
 }
 

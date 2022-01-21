@@ -51,7 +51,12 @@ function updateJoke(id, text){
 }
 
 function deleteJoke(id){ 
-    console.log("deleteJoke")
+    const jokeIdx = jokes.findIndex(t => t.id == id)
+    if(jokeIdx == -1)
+        return Promise.reject(errors.NOT_FOUND)
+    const joke = jokes[jokeIdx]
+    jokes.splice(jokeIdx, 1)
+    return Promise.resolve(joke)
 }
 
 

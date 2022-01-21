@@ -15,6 +15,7 @@ module.exports = function (jokesData) {
 
 
     async function getJokes(userId, searchText, skip, limit){
+        // Code commented to bypass login, just for easing developmnet
         if(!userId || userId.constructor != String)
             return Promise.reject("Invalid user Id")
         return jokesData.getJokes(searchText,skip, limit)
@@ -34,9 +35,10 @@ module.exports = function (jokesData) {
     async function updateJoke(id, text){
         console.log("updateJoke")
     }
-    
-    async function deleteJoke(id){ 
-        console.log("deleteJoke")
+      
+    async function deleteJoke(userId, id){ 
+        // TODO: Verify if the joke belongs to user with 'userId'
+        return jokesData.deleteJoke(id)
     }
 
     async function validateCredentials(username, password){
