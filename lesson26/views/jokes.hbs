@@ -1,11 +1,11 @@
-<div id="jokes" class="container" token="{{user.userId}}">
+<div id="jokes" class="container" data-token="{{user.userId}}">
     <h1>All jokes</h1>
     <a type="button" href="/site/jokes/new" role="button" class="btn btn-primary btn-sm">Create New Joke</a>
     {{#each jokes}}
     {{#if beginRow}}
-        <div class="row">
+        <div class="joke-row row">
     {{/if}}
-            <div id="joke-{{joke.id}}" class="col-6">
+            <div id="joke-{{joke.id}}" class="joke col-6">
                 <div class="card">
                     <div class="card-body">
                     <h5 class="card-title">{{joke.text}}</h5>

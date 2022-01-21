@@ -4,6 +4,7 @@
 const httpErrors = require('../http-errors')
 const express = require('express')
 const passport = require('passport') 
+const urls = require('./jokes-urls')
 
 module.exports = function(app, jokesServices) {
     if(!jokesServices) 
@@ -33,7 +34,7 @@ module.exports = function(app, jokesServices) {
     }
 
     function loginForm(req, rsp) {
-        rsp.render("login")
+        rsp.render("login", urls)
     }
 
     async function login(req, rsp) {
@@ -42,7 +43,7 @@ module.exports = function(app, jokesServices) {
 
         try {
             let userId = await jokesServices.validateCredentials(username, pass)
-            req.login({userId: userId, username: username}, (err) => rsp.redirect('/site/jokes'))
+            req.login({userId: userId, username: username}, (err) => rsp.redirect('/'))
             
         } catch(err) {
             rsp.status(401).render('login', { username: username, message: 'Invalid credentials'})
@@ -51,7 +52,7 @@ module.exports = function(app, jokesServices) {
 
     function logout(req, rsp) {
         req.logout()
-        rsp.redirect('/site/users/login')
+        rsp.redirect(urls.LOGIN)
     }
 }
 

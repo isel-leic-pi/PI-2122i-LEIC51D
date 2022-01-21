@@ -4,6 +4,7 @@
 
 const httpErrors = require('../http-errors')
 const express = require('express')
+const urls = require('./jokes-urls')
 
 module.exports = function(jokesServices) {
     if(!jokesServices) 
@@ -27,7 +28,7 @@ module.exports = function(jokesServices) {
             rsp.render('jokes', { user: req.user, title: 'All jokes', jokes: jokes.map((j, idx) =>  { return{ joke: j, beginRow: idx%2 == 0, endRow: idx%2 == 1 || idx == jokes.length-1}} )} )
         } catch(err) {
             console.log(err)
-            rsp.redirect('/site/users/login')
+            rsp.redirect(urls.LOGIN)
         }
     }
     

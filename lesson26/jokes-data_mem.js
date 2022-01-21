@@ -7,7 +7,7 @@ const USERS = [
 ]
 
 
- const SIZE_JOKES = 5
+ const SIZE_JOKES = 15
 
 const jokes = new Array(SIZE_JOKES).fill(undefined, 0, SIZE_JOKES)
             .map((_, idx) => { return  {id: idx+1, text: `joke${idx+1}`, userId: USERS[(idx%2)].userId} })

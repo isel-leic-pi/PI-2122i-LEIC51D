@@ -39,8 +39,8 @@ app.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
 app.use('/api', authApi)
 app.use('/api/jokes', jokesApi)           
-app.use('/site/jokes', jokesSite)           
-app.use('/site/users', usersSite)           
+app.use('/', jokesSite)           
+app.use('/users', usersSite)           
 
 
 
