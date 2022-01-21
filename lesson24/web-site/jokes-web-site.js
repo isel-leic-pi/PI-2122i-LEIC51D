@@ -1,4 +1,4 @@
-// File responsibilities
+// File rsponsibilities
 // Have the functions that handle HTTP requests and 
 // delegate all domain logic to jokes-services module
 
@@ -16,14 +16,17 @@ module.exports = function(jokesServices) {
     router.post('/', createJoke)
     router.get('/:id', getJoke)
     
+    
     return router
 
-
     async function getJokes(req, rsp){
-        let userId = req.user
-        let jokes = await jokesServices.getJokes(userId)
-        
-        rsp.render('jokes', { title: 'All jokes', jokes: jokes.map((j, idx) =>  { return{ joke: j, beginRow: idx%2 == 0, endRow: idx%2 == 1 || idx == jokes.length-1}} )} )
+        try {
+            let userId = req.user.userId
+            let jokes = await jokesServices.getJokes(userId)
+            rsp.render('jokes', { username: req.user.username, title: 'All jokes', jokes: jokes.map((j, idx) =>  { return{ joke: j, beginRow: idx%2 == 0, endRow: idx%2 == 1 || idx == jokes.length-1}} )} )
+        } catch(err) {
+            rsp.redirect('/site/users/login')
+        }
     }
     
 

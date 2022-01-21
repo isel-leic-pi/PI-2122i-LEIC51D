@@ -21,6 +21,7 @@ const jokesServices = require('./jokes-services')(jokesData)
 const jokesApi = require('./web-api/jokes-api')(jokesServices)
 const jokesSite = require('./web-site/jokes-web-site')(jokesServices)
 const usersSite = require('./web-site/users-web-site')(app, jokesServices)
+const authApi = require('./web-api/authorization')
 
 
 app.use(express.json())
@@ -28,21 +29,15 @@ app.use(express.urlencoded())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+app.set('view engine', 'hbs')
+require('hbs').registerPartials(__dirname + '/views/partials');
+
 
 app.use('/api-docs', swaggerUi.serve);
 app.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
-// Configure CRUD routes to manage jokes 
-//app.use(dummy)
-app.get('/api/jokes', jokesApi.getJokes)           // Get all jokes
-app.get('/api/jokes/:id', jokesApi.getJoke)        // Get a joke details
-app.delete('/api/jokes/:id', jokesApi.deleteJoke)  // Delete a joke
-app.put('/api/jokes/:id', jokesApi.updateJoke)     // Update a joke
-app.post('/api/jokes', jokesApi.createJoke)        // Delete a joke
-
-//app.use('/api', jokesApi)           // Get all jokes
-
+app.use('/api', authApi)
+app.use('/api', jokesApi)           
 app.use('/site/jokes', jokesSite)           
 app.use('/site/users', usersSite)           
 

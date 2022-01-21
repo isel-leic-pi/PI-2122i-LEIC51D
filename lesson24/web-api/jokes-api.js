@@ -3,19 +3,23 @@
 // delegate all domain logic to jokes-services module
 
 const httpErrors = require('../http-errors')
+const express = require('express')
 
 module.exports = function(jokesServices) {
     if(!jokesServices) 
-        throw "Invalid argument for jokesData"
+        throw "Invalid argument for jokesServices"
 
+    const router = express.Router()
     
-    return {
-        getJokes: getJokes,
-        getJoke: getJoke,
-        createJoke: createJoke,
-        deleteJoke: deleteJoke,
-        updateJoke: updateJoke
-    }
+    router.get('/jokes', getJokes)           // Get all jokes
+    router.get('/jokes/:id', getJoke)        // Get a joke details
+    router.delete('/jokes/:id', deleteJoke)  // Delete a joke
+    router.put('/jokes/:id', updateJoke)     // Update a joke
+    router.post('/jokes', createJoke)        // Delete a joke
+
+    return router
+
+
     async function getJokes(req, rsp){
         // jokesServices.getJokes()
         //     .then(jokes => rsp.json(jokes))
@@ -24,12 +28,13 @@ module.exports = function(jokesServices) {
         try {
             const skip = req.query.skip ? undefined : Number(req.query.skip)
             const limit = req.query.limit ? undefined : Number(req.query.limit)
-            //let userId = req.get('Authorization').split(' ')[1]
-            let userId = '0b115b6e-8fcd-4b66-ac26-33392dcb9340'
+            
+            let userId = req.user.userId
+            
             let jokes = await jokesServices.getJokes(userId, req.query.searchString, skip , limit)
             rsp.json(jokes)
         } catch(e) {
-            rsp.status(500).json({description: "Internal error occurred"})
+            rsp.status(401).json({description: "Invalid user"})
         }
     }
     

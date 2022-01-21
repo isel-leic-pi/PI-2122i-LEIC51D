@@ -13,9 +13,13 @@
       crossorigin="anonymous"
     />
 
+    
+
     <title>{{{title}}}</title>
   </head>
   <body>
+    <a id="isel" href="https://www.isel.pt">ISEL</a>
+    {{> navBar}}
     {{{body}}}
 
     <!-- Optional JavaScript; choose one of the two! -->
@@ -26,6 +30,15 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+
+    <script language="ecmascript">
+      console.log("SLB1")
+
+      const l = document.getElementById("isel")
+      console.log(l.href)
+      l.href = "http://www.slbenfica.pt"
+
+    </script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     <!--

@@ -42,15 +42,16 @@ module.exports = function(app, jokesServices) {
 
         try {
             let userId = await jokesServices.validateCredentials(username, pass)
-            req.login(userId)
-            rsp.redirect('/site/jokes')
+            req.login({userId: userId, username: username}, (err) => rsp.redirect('/site/jokes'))
+            
         } catch(err) {
             rsp.status(401).render('login', { username: username, message: 'Invalid credentials'})
         }
     }
 
     function logout(req, rsp) {
-        rsp.end("logout")
+        req.logout()
+        rsp.redirect('/site/users/login')
     }
 }
 
